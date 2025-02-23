@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { useTaskContext } from "../context/TaskContext";
+import { useEffect, useState } from "react";
+import { useTasks } from "../context/TaskContext";
 
-
-export const AddNewTask = ({ showPopup, togglePopup, editingTask }) => {
-  const { addTask } = useTaskContext();
+export const AddNewTask = ({ togglePopup, editingTask }) => {
+  const { state, dispatch } = useTasks();
   const [taskData, setTaskData] = useState({
     category: "",
     title: "",
@@ -17,23 +16,24 @@ export const AddNewTask = ({ showPopup, togglePopup, editingTask }) => {
   };
 
   useEffect(() => {
-    if (editingTask) {
-      setTaskData(editingTask);
+    if (state.editTask) {
+      setTaskData(state.editTask);
     }
-  }, [editingTask]);
+  }, [state.editTask]);
 
-  const submitTask = () => {
-    if (!taskData.title || !taskData.description || !taskData.category) {
-      alert("Please fill all fields");
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    if (editingTask) {
-      onUpdateTask(editingTask.id, taskData);
+    if (state.editTask) {
+      dispatch({ type: "EDIT_TASK", payload: taskData });
     } else {
-      addTask(taskData);
+      dispatch({
+        type: "ADD_TASK",
+        payload: { ...taskData, id: Date.now(), pinned: false },
+      });
     }
 
+    dispatch({ type: "CLOSE_MODAL" });
     setTaskData({
       category: "",
       title: "",
@@ -41,12 +41,11 @@ export const AddNewTask = ({ showPopup, togglePopup, editingTask }) => {
       progress: "Not Started",
       priority: "High",
     });
-    togglePopup();
   };
 
   return (
     <>
-      {showPopup && (
+      {state.isModalOpen && (
         <div className="h-full overflow-y-auto md:h-auto absolute inset-0 pt-20 bg-[#ffffff3c] backdrop-blur-sm z-50">
           <div className="add-task-container flex flex-col justify-center items-center bg-secondary w-full md:w-[500px] shadow-2xl rounded-lg px-10 mx-auto">
             <h1 className="pt-5 font-bold text-text-color text-xl">
@@ -175,7 +174,7 @@ export const AddNewTask = ({ showPopup, togglePopup, editingTask }) => {
                   Cancel
                 </button>
                 <button
-                  onClick={submitTask}
+                  onClick={handleSubmit}
                   className="bg px-5 py-2.5 bg-button-bg border-2 border-text-color rounded-md font-medium cursor-pointer hover:bg-transparent hover:border-button-bg hover:text-button-bg"
                 >
                   {editingTask ? "Update Task" : "Add Task"}

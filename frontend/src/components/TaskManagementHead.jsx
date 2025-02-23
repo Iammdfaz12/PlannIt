@@ -1,8 +1,10 @@
 import { IoSearch } from "react-icons/io5";
 import { MdAdd, MdOutlineSort } from "react-icons/md";
+import { useTasks } from "../context/TaskContext";
 
-export const TaskManagementHead = (props) => {
-  const togglePopup = props.togglePopup;
+export const TaskManagementHead = ({togglePopup}) => {
+
+  const { dispatch } = useTasks();
   return (
     <>
       <div className="flex flex-col px-10 py-3 justify-center gap-2.5">
@@ -29,7 +31,7 @@ export const TaskManagementHead = (props) => {
               <MdAdd size={20} />
             </button>
             <button
-              onClick={togglePopup}
+              onClick={() => dispatch({ type: 'SET_EDIT_TASK', payload: null })}
               className="bg-button-bg hidden md:flex justify-center items-center gap-1 px-5 py-3 font-bold rounded-lg border-2 border-text-color cursor-pointer"
             >
               <MdAdd size={20} /> New Task

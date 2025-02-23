@@ -1,54 +1,51 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
 
 const TaskContext = createContext();
 
+const taskReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TASK":
+      return { ...state, tasks: [action.payload, ...state.tasks] };
+    case "EDIT_TASK":
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        ),
+      };
+    case "DELETE_TASK":
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.payload),
+      };
+    case "TOGGLE_PIN":
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload ? { ...task, pinned: !task.pinned } : task
+        ),
+      };
+    case "SET_EDIT_TASK":
+      return { ...state, editTask: action.payload, isModalOpen: true };
+    case "CLOSE_MODAL":
+      return { ...state, isModalOpen: false, editTask: null };
+    default:
+      return state;
+  }
+};
+
 export const TaskProvider = ({ children }) => {
-  const [tasks, setTasks] = useState([]);
-  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [state, dispatch] = useReducer(taskReducer, {
+    tasks: [],
+    isModalOpen: false,
+    editTask: null,
+  });
 
-  const addTask = (task) => {
-    setTasks([...tasks, task]);
-  };
-
-  const deleteTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  };
-
-  const editTask = (task) => {
-    setTaskToEdit(task); // Set task in editing mode
-  };
-
-  const updateTask = (updatedTask) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-    );
-    setTaskToEdit(null); // Reset after updating
-  };
-
-  const togglePinTask = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, pinned: !task.pinned } : task
-      )
-    );
-  };
   return (
-    <TaskContext.Provider
-      value={{
-        tasks,
-        addTask,
-        editTask,
-        updateTask,
-        deleteTask,
-        togglePinTask,
-        taskToEdit,
-      }}
-    >
+    <TaskContext.Provider value={{ state, dispatch }}>
       {children}
     </TaskContext.Provider>
   );
 };
 
-export const useTaskContext = () => {
-  return useContext(TaskContext);
-};
+export const useTasks = () => useContext(TaskContext);
