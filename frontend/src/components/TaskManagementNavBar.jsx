@@ -59,17 +59,20 @@ export const TaskManagementNavBar = ({ searchTitle, handleSearch }) => {
         </div>
         <div
           id="profile-section"
-          className="profile relative w-[200px] flex justify-center items-center gap-2 cursor-pointer"
+          className="profile relative md:w-[200px] flex justify-center items-center gap-2 cursor-pointer"
           onClick={toggleDropdown}
         >
           <IoMdContact size={30} />
-          <p className="text-text-color  flex items-center gap-2.5 font-medium">
+          <p className="text-text-color hidden md:flex items-center gap-2.5 font-medium">
             <span className="select-none">Hi, {user ? user.name : ""}</span>
             <FaAngleDown />
           </p>
 
           {showDropdown && (
-            <div className=" absolute right-0 top-6 mt-2 w-full bg-white border rounded-lg shadow-lg overflow-hidden z-50">
+            <div className=" absolute flex flex-col right-0 top-6 mt-2 w-[200px] md:w-full bg-white border rounded-lg shadow-lg overflow-hidden z-50">
+              <p className="text-text-color pl-4 pt-2.5 md:hidden font-medium">
+                <span className="select-none">Hi, {user ? user.name : ""}</span>
+              </p>
               <button
                 onClick={handleSignOut}
                 className="w-full select-none flex items-center justify-between text-left px-4 py-2 hover:bg-gray-100"

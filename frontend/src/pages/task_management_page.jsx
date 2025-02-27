@@ -9,8 +9,6 @@ export const TaskManagementPage = () => {
   const { tasks } = useContext(TaskContext);
   const [searchTitle, setSearchTitle] = useState("");
   const [filterItems, setFilteritems] = useState(tasks);
-  const [sortOption, setSortOption] = useState("");
-  const [sortDropDown, setSortDropdown] = useState(false);
 
   useEffect(() => {
     setFilteritems(tasks);
@@ -30,15 +28,31 @@ export const TaskManagementPage = () => {
     }
   };
 
-  // Sort tasks based on the selected option
-  if (sortOption === "progress") {
-    filteredTasks.sort((a, b) => a.progress.localeCompare(b.progress));
-  } else if (sortOption === "priority") {
-    const priorityOrder = { High: 1, Medium: 2, Low: 3 }; // Custom sorting order
-    filteredTasks.sort(
-      (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
-    );
-  }
+  // Handle sorting functionality
+  const handleSort = (criteria) => {
+    let filteredTasks = [...tasks]; // Create a copy of tasks
+
+    if (
+      criteria === "Not Started" ||
+      criteria === "In-Progress" ||
+      criteria === "Completed"
+    ) {
+      // Filter by progress
+      filteredTasks = tasks.filter((task) => task.progress === criteria);
+    } else if (criteria === "High" || criteria === "Medium" || criteria === "Low") {
+      // Filter by priority
+      filteredTasks = tasks.filter((task) => task.priority === criteria);
+    }
+
+    setFilteritems(filteredTasks); // Update filterItems with filtered tasks
+  };
+
+  // Handle clear sort functionality
+  const handleClearSort = () => {
+    setFilteritems(tasks); // Reset filterItems to show all tasks
+  };
+
+
 
   return (
     <>
@@ -50,6 +64,8 @@ export const TaskManagementPage = () => {
         <TaskManagementHead
           searchTitle={searchTitle}
           handleSearch={handleSearch}
+          onSort={handleSort}
+          onClearSort={handleClearSort}
         />
         <AddNewTask />
         <TaskLists filterItems={filterItems} />
