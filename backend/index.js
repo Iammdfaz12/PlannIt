@@ -11,10 +11,7 @@ app.use(express.json());
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.DATABASE_URL)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB is not connected: ".err));
 
