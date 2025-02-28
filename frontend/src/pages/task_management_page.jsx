@@ -34,12 +34,16 @@ export const TaskManagementPage = () => {
 
     if (
       criteria === "Not Started" ||
-      criteria === "In-Progress" ||
+      criteria === "In Progress" ||
       criteria === "Completed"
     ) {
       // Filter by progress
       filteredTasks = tasks.filter((task) => task.progress === criteria);
-    } else if (criteria === "High" || criteria === "Medium" || criteria === "Low") {
+    } else if (
+      criteria === "High" ||
+      criteria === "Medium" ||
+      criteria === "Low"
+    ) {
       // Filter by priority
       filteredTasks = tasks.filter((task) => task.priority === criteria);
     }
@@ -51,8 +55,6 @@ export const TaskManagementPage = () => {
   const handleClearSort = () => {
     setFilteritems(tasks); // Reset filterItems to show all tasks
   };
-
-
 
   return (
     <>
