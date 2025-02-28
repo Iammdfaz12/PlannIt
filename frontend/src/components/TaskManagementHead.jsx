@@ -76,10 +76,10 @@ export const TaskManagementHead = ({
                     Not Started
                   </button>
                   <button
-                    onClick={() => handleSort("In-Progress")}
+                    onClick={() => handleSort("In Progress")}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   >
-                    In-Progress
+                    In Progress
                   </button>
                   <button
                     onClick={() => handleSort("Completed")}
