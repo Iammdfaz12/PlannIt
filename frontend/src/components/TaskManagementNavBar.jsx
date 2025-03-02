@@ -27,7 +27,7 @@ export const TaskManagementNavBar = ({ searchTitle, handleSearch }) => {
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
-      navigate("/");
+      navigate("/signin");
     });
   };
 

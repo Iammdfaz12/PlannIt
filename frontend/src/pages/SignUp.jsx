@@ -79,7 +79,7 @@ export const SignUp = () => {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        navigate("/task_management");
+        navigate("/");
       }
     });
   });
@@ -163,7 +163,7 @@ export const SignUp = () => {
             <p className="text-[#231C16] font-medium text-md">
               Already Have an Account?{" "}
               <span className="text-[#2FE6CC] font-medium underline cursor-pointer">
-                <Link to={"/"}>Sign In</Link>
+                <Link to={"/signin"}>Sign In</Link>
               </span>
             </p>
           </div>
