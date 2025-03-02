@@ -46,7 +46,7 @@ export const SignIn = () => {
       );
       const user = userCredential.user;
       const userName = user.displayName;
-      navigate("/", { state: { name: userName } });
+      navigate("/task_management", { state: { name: userName } });
     } catch (error) {
       const errorCode = error.code;
 
@@ -69,6 +69,14 @@ export const SignIn = () => {
       }
     }
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        navigate("/task_management");
+      }
+    });
+  });
 
   return (
     <>

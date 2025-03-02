@@ -14,14 +14,6 @@ export const TaskManagementPage = () => {
     setFilteritems(tasks);
   }, [tasks]);
 
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        navigate("/signin");
-      }
-    });
-  });
-
   const handleSearch = (e) => {
     const query = e.target.value;
     setSearchTitle(query);
