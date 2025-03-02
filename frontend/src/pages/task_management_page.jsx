@@ -17,7 +17,7 @@ export const TaskManagementPage = () => {
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        navigate("/");
+        navigate("/signin");
       }
     });
   });
