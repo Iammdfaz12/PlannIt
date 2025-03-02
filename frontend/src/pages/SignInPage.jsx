@@ -70,14 +70,6 @@ export const SignIn = () => {
     }
   };
 
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        navigate("/");
-      }
-    });
-  });
-
   return (
     <>
       <div className="bg-[#F7F5F4] min-h-screen flex flex-col md:flex-row pb-8 px-7 justify-center md:gap-20 items-center">
